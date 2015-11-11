@@ -23,26 +23,38 @@ namespace Joel_Likes
         public MainWindow()
         {
             InitializeComponent();
-            Display.Text = "Welcome to JOEL LIKES!!!";
-            Score.Text = "0";
-            button_1.Content = bucket(21)[0];
-            button_2.Content = bucket(21)[1];
-            button_3.Content = bucket(21)[2];
-            button_4.Content = "Why should I play this creative game?";
+            gameController(Operation.Welcome);
         }
 
         int? level = null;
         public enum Operation { Welcome, Explanation, HowWin, WhyPlay, GameOn, Failure, YouWon }
         public Operation stage = Operation.Welcome;
+        public int attempts = 0;
 
-        public static string[] currentQuestion = bucket(22);
-        public int[] selectedOrder = orderOptions();
+
+
+
+        public string[] currentQuestion = bucket(22);
 
         public void gameController(Operation stage)
         {
+
             switch (stage)
             {
                 case Operation.Welcome:
+                    if (attempts > 5)
+                    {
+                        attempts = 0;
+                    }
+                    Display.Text = "Welcome to JOEL LIKES!!!";
+                    Score.Text = "0";
+                    button_1.Content = bucket(21)[0];
+                    button_2.Content = bucket(21)[1];
+                    button_3.Content = bucket(21)[2];
+                    button_4.Content = "Why should I play this creative game?";
+                    //This should equal a set of five arrays (supplied by orderOptions), and I need to select one of them (based on 'attempts') to supply to bucket.
+                    Array[] fiveArrays = orderOptions();
+                    int[] oneArray = (int[])fiveArrays[attempts];
 
                     break;
                 case Operation.Explanation:
@@ -70,7 +82,8 @@ namespace Joel_Likes
                     if (level < 10)
                     {
                         level += 1;
-                        currentQuestion = bucket(selectedOrder.ElementAt((int)level));
+                        //Need to supply bucket with an Int indicating which question to provide to the whole program. This can come from an array, iterated through by supplying level to the array.
+                        currentQuestion = bucket(oneArray.ElementAt((int)level));
                         Score.Text = level.ToString();
                         button_1.Content = currentQuestion[2];
                         button_2.Content = currentQuestion[3];
@@ -94,6 +107,7 @@ namespace Joel_Likes
                     button_3.Content = currentQuestion[0];
                     button_3.IsEnabled = false;
                     button_4.Content = "Play Again";
+                    attempts += 1;
                     Display.Text = "I'm sorry. You answered incorrectly";
                     break;
                 case Operation.YouWon:
@@ -219,7 +233,7 @@ namespace Joel_Likes
         }
 
 
-        public static int[] orderOptions()
+        public Array[] orderOptions()
         {
             int[] firstOrder = { 5, 7, 9, 11, 13, 15, 1, 3, 2, 4, 6, 8, 10, 12, 14 };
             int[] secondOrder = { 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
@@ -237,11 +251,28 @@ namespace Joel_Likes
             setOptions.Add(4, fourthOrder);
             setOptions.Add(5, fifthOrder);
 
-            int[] selectedOrder = setOptions[pickFrom];
+            Array[] selectedOrder = new Array[5];
+            int positionInArray = 0;
 
+            for (int i = 0; i <= 5; i++)
+            {
+                if (pickFrom > 5)
+                {
+                    pickFrom = 1;
+                }
+                selectedOrder.SetValue(setOptions[pickFrom], positionInArray);
+                positionInArray++;
+                pickFrom++;
+            }
 
             return selectedOrder;
         }
+
+        //public int[] currentOrder(Array[] setOfOrders)
+        //{
+        //    setOfOrders
+
+        //}
 
         public static string[] bucket(int key)
         {
