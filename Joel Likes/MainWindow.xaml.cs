@@ -26,11 +26,12 @@ namespace Joel_Likes
             gameController(Operation.Welcome);
         }
 
-        int? level = null;
+
         public enum Operation { Welcome, Explanation, HowWin, WhyPlay, GameOn, Failure, YouWon }
         public Operation stage = Operation.Welcome;
         public int attempts = 0;
-
+        public int? level = null;
+        public int questionNumber = 0;
 
 
 
@@ -38,7 +39,7 @@ namespace Joel_Likes
 
         public void gameController(Operation stage)
         {
-
+            int oneNumber = useThisQuestion(orderOptions(), attempts, questionNumber);
             switch (stage)
             {
                 case Operation.Welcome:
@@ -53,8 +54,8 @@ namespace Joel_Likes
                     button_3.Content = bucket(21)[2];
                     button_4.Content = "Why should I play this creative game?";
                     //This should equal a set of five arrays (supplied by orderOptions), and I need to select one of them (based on 'attempts') to supply to bucket.
-                    Array[] fiveArrays = orderOptions();
-                    int[] oneArray = (int[])fiveArrays[attempts];
+                    //Array[] fiveArrays = orderOptions();
+                    //int[] oneArray = (int[])fiveArrays[attempts];
 
                     break;
                 case Operation.Explanation:
@@ -82,8 +83,9 @@ namespace Joel_Likes
                     if (level < 10)
                     {
                         level += 1;
-                        //Need to supply bucket with an Int indicating which question to provide to the whole program. This can come from an array, iterated through by supplying level to the array.
-                        currentQuestion = bucket(oneArray.ElementAt((int)level));
+                        questionNumber += 1;
+                        //Need to supply bucket with an Int indicating which question to provide to the whole program. This can come from an array, iterated through by supplying questionNumber to the array.
+                        currentQuestion = bucket(oneNumber);
                         Score.Text = level.ToString();
                         button_1.Content = currentQuestion[2];
                         button_2.Content = currentQuestion[3];
@@ -242,7 +244,7 @@ namespace Joel_Likes
             int[] fifthOrder = { 13, 11, 2, 3, 5, 15, 1, 14, 4, 10, 12, 7, 8, 9, 6 };
 
             Random rnd = new Random();
-            int pickFrom = rnd.Next(1, 6);
+            int firstArrayKey = rnd.Next(1, 6);
 
             Dictionary<int, int[]> setOptions = new Dictionary<int, int[]>();
             setOptions.Add(1, firstOrder);
@@ -251,28 +253,38 @@ namespace Joel_Likes
             setOptions.Add(4, fourthOrder);
             setOptions.Add(5, fifthOrder);
 
-            Array[] selectedOrder = new Array[5];
+            Array[] selectedOrder = new int[5][];
             int positionInArray = 0;
 
-            for (int i = 0; i <= 5; i++)
+            for (int i = 0; i < 5; i++)
             {
-                if (pickFrom > 5)
+                if (firstArrayKey > 5)
                 {
-                    pickFrom = 1;
+                    firstArrayKey = 1;
                 }
-                selectedOrder.SetValue(setOptions[pickFrom], positionInArray);
+                selectedOrder.SetValue(setOptions[firstArrayKey], positionInArray);
+                firstArrayKey++;
                 positionInArray++;
-                pickFrom++;
             }
+
+
 
             return selectedOrder;
         }
 
-        //public int[] currentOrder(Array[] setOfOrders)
-        //{
-        //    setOfOrders
+        public int useThisQuestion(Array[] setOfOrders, int attempts, int questionNumber)
+        {
+            Dictionary<int, int[]> indexedArrays = new Dictionary<int, int[]>();
+            int indexValue = 0;
+            foreach (var assignedArray in setOfOrders)
+            {
+                indexedArrays.Add(indexValue, (int[])assignedArray);
+                indexValue++;
+            }
 
-        //}
+            return indexedArrays[attempts][questionNumber];
+
+        }
 
         public static string[] bucket(int key)
         {
