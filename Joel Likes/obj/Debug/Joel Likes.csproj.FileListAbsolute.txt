@@ -1,0 +1,14 @@
+C:\Ongoing Projects\cSharp\Joel Likes\Joel Likes\bin\Debug\Joel Likes.exe.config
+C:\Ongoing Projects\cSharp\Joel Likes\Joel Likes\obj\Debug\Joel Likes.csprojResolveAssemblyReference.cache
+C:\Ongoing Projects\cSharp\Joel Likes\Joel Likes\obj\Debug\MainWindow.g.cs
+C:\Ongoing Projects\cSharp\Joel Likes\Joel Likes\obj\Debug\App.g.cs
+C:\Ongoing Projects\cSharp\Joel Likes\Joel Likes\obj\Debug\Joel Likes_MarkupCompile.cache
+C:\Ongoing Projects\cSharp\Joel Likes\Joel Likes\obj\Debug\Joel Likes_MarkupCompile.lref
+C:\Ongoing Projects\cSharp\Joel Likes\Joel Likes\bin\Debug\Joel Likes.exe
+C:\Ongoing Projects\cSharp\Joel Likes\Joel Likes\bin\Debug\Joel Likes.pdb
+C:\Ongoing Projects\cSharp\Joel Likes\Joel Likes\obj\Debug\MainWindow.baml
+C:\Ongoing Projects\cSharp\Joel Likes\Joel Likes\obj\Debug\Joel Likes.g.resources
+C:\Ongoing Projects\cSharp\Joel Likes\Joel Likes\obj\Debug\Joel_Likes.Properties.Resources.resources
+C:\Ongoing Projects\cSharp\Joel Likes\Joel Likes\obj\Debug\Joel Likes.csproj.GenerateResource.Cache
+C:\Ongoing Projects\cSharp\Joel Likes\Joel Likes\obj\Debug\Joel Likes.exe
+C:\Ongoing Projects\cSharp\Joel Likes\Joel Likes\obj\Debug\Joel Likes.pdb
