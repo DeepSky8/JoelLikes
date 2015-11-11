@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="800" WindowStartupLocation="CenterScreen" Cursor="Hand" ToolTip="The popular game for mentors!">
     <Grid ToolTip="The popular game for mentors!">
-        <TextBox x:Name="Display" HorizontalAlignment="Left" Height="73" Margin="22,10,0,0" TextWrapping="Wrap" Text="Welcome!" VerticalAlignment="Top" Width="618" FontSize="17.333" IsTabStop="False" Cursor="Arrow"/>
+        <TextBox x:Name="Display" HorizontalAlignment="Left" Height="73" Margin="22,10,0,0" TextWrapping="Wrap" Text="Welcome!" VerticalAlignment="Top" Width="618" FontSize="29.333" IsTabStop="False" Cursor="Arrow" IsReadOnly="True" IsUndoEnabled="False" TextAlignment="Center"/>
         <Button x:Name="button_1" Content="" HorizontalAlignment="Left" Margin="22,100,0,0" VerticalAlignment="Top" Width="748" Height="75" Click="button_Click" ToolTip="Click to select this option!" FontSize="26.667"/>
         <Button x:Name="button_2" Content="" HorizontalAlignment="Left" Margin="22,190,0,0" VerticalAlignment="Top" Width="748" Height="75" Click="button_2_Click" ToolTip="Click to select this option!" FontSize="26.667"/>
         <Button x:Name="button_3" Content="" HorizontalAlignment="Left" Margin="22,280,0,0" VerticalAlignment="Top" Width="748" Height="75" Click="button_3_Click" ToolTip="Click to select this option!" FontSize="26.667"/>

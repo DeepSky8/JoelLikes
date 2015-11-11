@@ -31,19 +31,19 @@ namespace Joel_Likes
             button_4.Content = "Why should I play this creative game?";
         }
 
-        int scoreStore = -1;
         int? level = null;
         public enum Operation { Welcome, Explanation, HowWin, WhyPlay, GameOn, Failure, YouWon }
         public Operation stage = Operation.Welcome;
-        public static string[] currentQuestion = bucket(22);
-        public Random rnd = new Random();
 
+        public static string[] currentQuestion = bucket(22);
+        public int[] selectedOrder = orderOptions();
 
         public void gameController(Operation stage)
         {
             switch (stage)
             {
                 case Operation.Welcome:
+
                     break;
                 case Operation.Explanation:
                     currentQuestion = bucket(23);
@@ -67,30 +67,45 @@ namespace Joel_Likes
                     {
                         level = -1;
                     }
-                    level += 1;
-                    scoreStore += 1;
-                    Score.Text = scoreStore.ToString();
-                    currentQuestion = bucket(rnd.Next(1, 16));
-                    button_1.Content = currentQuestion[2];
-                    button_2.Content = currentQuestion[3];
-                    button_3.Content = currentQuestion[4];
-                    button_4.Content = currentQuestion[5];
-                    Display.Text = currentQuestion[0];
+                    if (level < 10)
+                    {
+                        level += 1;
+                        currentQuestion = bucket(selectedOrder.ElementAt((int)level));
+                        Score.Text = level.ToString();
+                        button_1.Content = currentQuestion[2];
+                        button_2.Content = currentQuestion[3];
+                        button_3.Content = currentQuestion[4];
+                        button_4.Content = currentQuestion[5];
+                        Display.Text = currentQuestion[0];
+                    }
+                    else
+                    {
+                        stage = Operation.YouWon;
+                        gameController(stage);
+                    }
+                   
                     break;
                 case Operation.Failure:
                     currentQuestion = bucket(0);
                     button_1.Content = currentQuestion[0];
+                    button_1.IsEnabled = false;
                     button_2.Content = currentQuestion[0];
+                    button_2.IsEnabled = false;
                     button_3.Content = currentQuestion[0];
-                    button_4.Content = currentQuestion[0];
+                    button_3.IsEnabled = false;
+                    button_4.Content = "Play Again";
                     Display.Text = "I'm sorry. You answered incorrectly";
                     break;
                 case Operation.YouWon:
                     currentQuestion = bucket(0);
                     button_1.Content = currentQuestion[1];
+                    button_1.IsEnabled = false;
                     button_2.Content = currentQuestion[1];
+                    button_2.IsEnabled = false;
                     button_3.Content = currentQuestion[1];
+                    button_3.IsEnabled = false;
                     button_4.Content = currentQuestion[1];
+                    button_4.IsEnabled = false;
                     Display.Text = "Congratulations!! You now know a lot more about what Joel likes!";
                     break;
                 default:
@@ -173,27 +188,60 @@ namespace Joel_Likes
 
         private void button_4_Click(object sender, RoutedEventArgs e)
         {
-            int button = 4;
-            if (!level.HasValue)
+            if (stage == Operation.Failure)
             {
-                stage = Operation.WhyPlay;
+                stage = Operation.Welcome;
                 gameController(stage);
             }
             else
             {
-                if (currentQuestion[1] == button.ToString())
+                int button = 4;
+                if (!level.HasValue)
                 {
-                    stage = Operation.GameOn;
+                    stage = Operation.WhyPlay;
                     gameController(stage);
                 }
                 else
                 {
-                    stage = Operation.Failure;
-                    gameController(stage);
+                    if (currentQuestion[1] == button.ToString())
+                    {
+                        stage = Operation.GameOn;
+                        gameController(stage);
+                    }
+                    else
+                    {
+                        stage = Operation.Failure;
+                        gameController(stage);
+                    }
                 }
             }
+
         }
 
+
+        public static int[] orderOptions()
+        {
+            int[] firstOrder = { 5, 7, 9, 11, 13, 15, 1, 3, 2, 4, 6, 8, 10, 12, 14 };
+            int[] secondOrder = { 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+            int[] thirdOrder = { 6, 3, 1, 8, 15, 13, 11, 7, 5, 2, 10, 4, 14, 9, 12 };
+            int[] fourthOrder = { 11, 1, 10, 2, 8, 3, 5, 4, 15, 6, 9, 7, 14, 13, 14 };
+            int[] fifthOrder = { 13, 11, 2, 3, 5, 15, 1, 14, 4, 10, 12, 7, 8, 9, 6 };
+
+            Random rnd = new Random();
+            int pickFrom = rnd.Next(1, 6);
+
+            Dictionary<int, int[]> setOptions = new Dictionary<int, int[]>();
+            setOptions.Add(1, firstOrder);
+            setOptions.Add(2, secondOrder);
+            setOptions.Add(3, thirdOrder);
+            setOptions.Add(4, fourthOrder);
+            setOptions.Add(5, fifthOrder);
+
+            int[] selectedOrder = setOptions[pickFrom];
+
+
+            return selectedOrder;
+        }
 
         public static string[] bucket(int key)
         {
@@ -269,12 +317,12 @@ namespace Joel_Likes
                                     "3",
                                     "5",
                                     "9" };
-            string[] questTwelve = {"Into what postion was Joel born in his family?",
+            string[] questTwelve = {"Joel likes to play this kind of card game:",
                                     "1",
-                                    "Firstborn",
-                                    "Second child",
-                                    "Middle child",
-                                    "Baby of the family" };
+                                    "Magic: the Gathering",
+                                    "Euchre",
+                                    "ERS",
+                                    "Bridge" };
             string[] questThirteen = {"Joel left the Boy Scouts with this rank:",
                                     "4",
                                     "First Class Scout",
