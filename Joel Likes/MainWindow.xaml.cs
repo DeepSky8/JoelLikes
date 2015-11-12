@@ -29,69 +29,55 @@ namespace Joel_Likes
 
         public enum Operation { Welcome, Explanation, HowWin, WhyPlay, GameOn, Failure, YouWon }
         public Operation stage = Operation.Welcome;
-        public int attempts = 0;
+        public int attempts = 1;
         public int? level = null;
-        public int questionNumber = 0;
-
-
-
         public string[] currentQuestion = bucket(22);
+
+
 
         public void gameController(Operation stage)
         {
-            int oneNumber = useThisQuestion(orderOptions(), attempts, questionNumber);
             switch (stage)
             {
                 case Operation.Welcome:
-                    if (attempts > 5)
-                    {
-                        attempts = 0;
-                    }
                     Display.Text = "Welcome to JOEL LIKES!!!";
                     Score.Text = "0";
+                    level = null;
                     button_1.Content = bucket(21)[0];
+                    button_1.IsEnabled = true;
                     button_2.Content = bucket(21)[1];
-                    button_3.Content = bucket(21)[2];
-                    button_4.Content = "Why should I play this creative game?";
-                    //This should equal a set of five arrays (supplied by orderOptions), and I need to select one of them (based on 'attempts') to supply to bucket.
-                    //Array[] fiveArrays = orderOptions();
-                    //int[] oneArray = (int[])fiveArrays[attempts];
-
+                    button_2.IsEnabled = true;
+                    button_3.Content = "Why should I play this creative game?";
+                    button_3.IsEnabled = true;
+                    button_4.Content = bucket(21)[2];
                     break;
                 case Operation.Explanation:
                     currentQuestion = bucket(23);
                     Display.Text = currentQuestion[0];
-                    button_4.Content = "Why should I play this brilliant game?";
-
+                    button_3.Content = "Why should I play this brilliant game?";
                     break;
                 case Operation.HowWin:
                     currentQuestion = bucket(24);
                     Display.Text = currentQuestion[0];
-                    button_4.Content = "Why should I play this inventive game?";
-
+                    button_3.Content = "Why should I play this inventive game?";
                     break;
                 case Operation.WhyPlay:
                     currentQuestion = bucket(25);
                     Display.Text = currentQuestion[0];
-                    button_4.Content = "Why should I play this impressive game?";
+                    button_3.Content = "Why should I play this impressive game?";
                     break;
                 case Operation.GameOn:
-                    if (!level.HasValue)
-                    {
-                        level = -1;
-                    }
+                    if (!level.HasValue) { level = 0; }
                     if (level < 10)
                     {
-                        level += 1;
-                        questionNumber += 1;
-                        //Need to supply bucket with an Int indicating which question to provide to the whole program. This can come from an array, iterated through by supplying questionNumber to the array.
-                        currentQuestion = bucket(oneNumber);
+                        currentQuestion = bucket(oneNumber(attempts, (int)level));
                         Score.Text = level.ToString();
                         button_1.Content = currentQuestion[2];
                         button_2.Content = currentQuestion[3];
                         button_3.Content = currentQuestion[4];
                         button_4.Content = currentQuestion[5];
                         Display.Text = currentQuestion[0];
+                        level++;
                     }
                     else
                     {
@@ -109,11 +95,13 @@ namespace Joel_Likes
                     button_3.Content = currentQuestion[0];
                     button_3.IsEnabled = false;
                     button_4.Content = "Play Again";
-                    attempts += 1;
                     Display.Text = "I'm sorry. You answered incorrectly";
+                    attempts++;
+                    if (attempts > 5) { attempts = 1; }
                     break;
                 case Operation.YouWon:
                     currentQuestion = bucket(0);
+                    Score.Text = "10";
                     button_1.Content = currentQuestion[1];
                     button_1.IsEnabled = false;
                     button_2.Content = currentQuestion[1];
@@ -129,14 +117,12 @@ namespace Joel_Likes
             }
         }
 
-
-
         private void button_Click(object sender, RoutedEventArgs e)
         {
             int button = 1;
             if (!level.HasValue)
             {
-                stage = Operation.GameOn;
+                stage = Operation.Explanation;
                 gameController(stage);
             }
             else
@@ -160,7 +146,7 @@ namespace Joel_Likes
             int button = 2;
             if (!level.HasValue)
             {
-                stage = Operation.Explanation;
+                stage = Operation.HowWin;
                 gameController(stage);
             }
             else
@@ -184,7 +170,7 @@ namespace Joel_Likes
             int button = 3;
             if (!level.HasValue)
             {
-                stage = Operation.HowWin;
+                stage = Operation.WhyPlay;
                 gameController(stage);
             }
             else
@@ -214,7 +200,7 @@ namespace Joel_Likes
                 int button = 4;
                 if (!level.HasValue)
                 {
-                    stage = Operation.WhyPlay;
+                    stage = Operation.GameOn;
                     gameController(stage);
                 }
                 else
@@ -234,65 +220,34 @@ namespace Joel_Likes
 
         }
 
-
-        public Array[] orderOptions()
+        private int oneNumber(int attempts, int level)
         {
-            int[] firstOrder = { 5, 7, 9, 11, 13, 15, 1, 3, 2, 4, 6, 8, 10, 12, 14 };
-            int[] secondOrder = { 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
-            int[] thirdOrder = { 6, 3, 1, 8, 15, 13, 11, 7, 5, 2, 10, 4, 14, 9, 12 };
-            int[] fourthOrder = { 11, 1, 10, 2, 8, 3, 5, 4, 15, 6, 9, 7, 14, 13, 14 };
-            int[] fifthOrder = { 13, 11, 2, 3, 5, 15, 1, 14, 4, 10, 12, 7, 8, 9, 6 };
+            int[] arrayOne = { 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+            int[] arrayTwo = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+            int[] arrayThree = { 5, 7, 9, 11, 13, 15, 1, 3, 2, 4, 6, 8, 10, 12, 14 };
+            int[] arrayFour = { 8, 1, 7, 2, 9, 3, 11, 4, 13, 6, 15, 5, 10, 12, 14 };
+            int[] arrayFive = { 2, 4, 6, 8, 10, 12, 14, 15, 13, 11, 9, 7, 5, 3, 1 };
 
-            Random rnd = new Random();
-            int firstArrayKey = rnd.Next(1, 6);
+            Dictionary<int, int[]> selectArray = new Dictionary<int, int[]>();
+            selectArray.Add(1, arrayOne);
+            selectArray.Add(2, arrayTwo);
+            selectArray.Add(3, arrayThree);
+            selectArray.Add(4, arrayFour);
+            selectArray.Add(5, arrayFive);
 
-            Dictionary<int, int[]> setOptions = new Dictionary<int, int[]>();
-            setOptions.Add(1, firstOrder);
-            setOptions.Add(2, secondOrder);
-            setOptions.Add(3, thirdOrder);
-            setOptions.Add(4, fourthOrder);
-            setOptions.Add(5, fifthOrder);
+            int nextQuestion = selectArray[attempts][level];
 
-            Array[] selectedOrder = new int[5][];
-            int positionInArray = 0;
-
-            for (int i = 0; i < 5; i++)
-            {
-                if (firstArrayKey > 5)
-                {
-                    firstArrayKey = 1;
-                }
-                selectedOrder.SetValue(setOptions[firstArrayKey], positionInArray);
-                firstArrayKey++;
-                positionInArray++;
-            }
-
-
-
-            return selectedOrder;
-        }
-
-        public int useThisQuestion(Array[] setOfOrders, int attempts, int questionNumber)
-        {
-            Dictionary<int, int[]> indexedArrays = new Dictionary<int, int[]>();
-            int indexValue = 0;
-            foreach (var assignedArray in setOfOrders)
-            {
-                indexedArrays.Add(indexValue, (int[])assignedArray);
-                indexValue++;
-            }
-
-            return indexedArrays[attempts][questionNumber];
+            return nextQuestion;
 
         }
 
         public static string[] bucket(int key)
         {
             string[] welcome = { "Welcome to JOEL LIKES!" };
-            string[] explanation = { "This game will display a question about an activity or tangible item Joel may like. Answer correctly to receive the next question.", "Continue", "Continue" };
-            string[] howWin = {  "If you successfully answer all ten questions about Joel, you win! If at any point you answer a question incorrectly, you lose.", "Continue", "Continue" };
+            string[] explanation = { "This game will display a question about something Joel may like.", "Continue", "Continue" };
+            string[] howWin = {  "If you successfully answer all ten questions about Joel, you win!", "Continue", "Continue" };
             string[] whyPlay = {  "Studies have shown that people who play games tend to be better mentors.","Continue", "Continue" };
-            string[] introButtons = { "Play Game!", "What is this?", "How do I win?" };
+            string[] introButtons = { "What is this?", "How do I win?", "Play Game!" };
             string[] failureWinner = { "Incorrect", "Success!" };
             string[] questOne = {   "This is the type of beer that Joel likes best:",
                                     "2",
@@ -360,7 +315,7 @@ namespace Joel_Likes
                                     "3",
                                     "5",
                                     "9" };
-            string[] questTwelve = {"Joel likes to play this kind of card game:",
+            string[] questTwelve = {"Joel likes to play this card game:",
                                     "1",
                                     "Magic: the Gathering",
                                     "Euchre",
